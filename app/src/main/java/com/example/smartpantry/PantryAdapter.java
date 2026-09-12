@@ -1,5 +1,8 @@
 package com.example.smartpantry;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +19,13 @@ import java.util.ArrayList;
 public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryViewHolder> {
 
     private ArrayList<PantryItem> pantryItems;
+    private Context context;
+    private DatabaseHelper databaseHelper;
 
-    public PantryAdapter(ArrayList<PantryItem> pantryItems) {
+    public PantryAdapter(Context context, ArrayList<PantryItem> pantryItems) {
+        this.context = context;
         this.pantryItems = pantryItems;
+        this.databaseHelper = new DatabaseHelper(context);
     }
 
     @NonNull
@@ -51,6 +58,45 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         holder.tvExpiry.setText(
                 "Expiry: " + item.getExpiryDate()
         );
+
+        // Edit button
+        holder.btnEdit.setOnClickListener(v -> {
+
+            Intent intent = new Intent(
+                    context,
+                    AddIngredientActivity.class
+            );
+
+            intent.putExtra("ingredient_id", item.getId());
+            intent.putExtra("ingredient_name", item.getName());
+            intent.putExtra("ingredient_quantity", item.getQuantity());
+            intent.putExtra("ingredient_unit", item.getUnit());
+            intent.putExtra("ingredient_expiry", item.getExpiryDate());
+
+            context.startActivity(intent);
+        });
+
+        // Delete button
+        holder.btnDelete.setOnClickListener(v -> {
+
+            new AlertDialog.Builder(context)
+                    .setTitle("Delete Ingredient")
+                    .setMessage(
+                            "Are you sure you want to delete "
+                                    + item.getName() + "?"
+                    )
+                    .setPositiveButton("Delete", (dialog, which) -> {
+
+                        databaseHelper.deletePantryItem(item.getId());
+
+                        pantryItems.remove(position);
+
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, pantryItems.size());
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
     }
 
     @Override

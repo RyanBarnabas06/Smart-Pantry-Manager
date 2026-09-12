@@ -27,6 +27,10 @@ public class AddIngredientActivity extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
 
+    // Used when editing an existing ingredient
+    private int ingredientId = -1;
+    private boolean isEditMode = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +64,7 @@ public class AddIngredientActivity extends AppCompatActivity {
                 "kg",
                 "g",
                 "litres",
-                "ml",
+                "ml"
         };
 
         ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(
@@ -74,6 +78,49 @@ public class AddIngredientActivity extends AppCompatActivity {
         );
 
         spUnit.setAdapter(unitAdapter);
+
+        // Check whether this screen was opened for editing
+        if (getIntent().hasExtra("ingredient_id")) {
+
+            isEditMode = true;
+
+            ingredientId = getIntent().getIntExtra(
+                    "ingredient_id",
+                    -1
+            );
+
+            String name = getIntent().getStringExtra(
+                    "ingredient_name"
+            );
+
+            double quantity = getIntent().getDoubleExtra(
+                    "ingredient_quantity",
+                    0
+            );
+
+            String unit = getIntent().getStringExtra(
+                    "ingredient_unit"
+            );
+
+            String expiryDate = getIntent().getStringExtra(
+                    "ingredient_expiry"
+            );
+
+            // Fill the form with existing information
+            etIngredientName.setText(name);
+            etQuantity.setText(String.valueOf(quantity));
+            etExpiryDate.setText(expiryDate);
+
+            // Select the existing unit
+            for (int i = 0; i < units.length; i++) {
+
+                if (units[i].equals(unit)) {
+
+                    spUnit.setSelection(i);
+                    break;
+                }
+            }
+        }
 
         // Expiry date picker
         etExpiryDate.setOnClickListener(v -> showDatePicker());
@@ -194,34 +241,72 @@ public class AddIngredientActivity extends AppCompatActivity {
             return;
         }
 
-        // Create PantryItem
-        PantryItem pantryItem = new PantryItem(
-                name,
-                quantity,
-                unit,
-                expiryDate
-        );
+        if (isEditMode) {
 
-        // Save to database
-        long result = databaseHelper.addPantryItem(pantryItem);
+            // UPDATE existing ingredient
+            PantryItem pantryItem = new PantryItem(
+                    ingredientId,
+                    name,
+                    quantity,
+                    unit,
+                    expiryDate
+            );
 
-        if (result != -1) {
+            int result = databaseHelper.updatePantryItem(
+                    pantryItem
+            );
 
-            Toast.makeText(
-                    this,
-                    "Ingredient saved successfully",
-                    Toast.LENGTH_SHORT
-            ).show();
+            if (result > 0) {
 
-            finish();
+                Toast.makeText(
+                        this,
+                        "Ingredient updated successfully",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+                finish();
+
+            } else {
+
+                Toast.makeText(
+                        this,
+                        "Failed to update ingredient",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
 
         } else {
 
-            Toast.makeText(
-                    this,
-                    "Failed to save ingredient",
-                    Toast.LENGTH_SHORT
-            ).show();
+            // CREATE new ingredient
+            PantryItem pantryItem = new PantryItem(
+                    name,
+                    quantity,
+                    unit,
+                    expiryDate
+            );
+
+            long result = databaseHelper.addPantryItem(
+                    pantryItem
+            );
+
+            if (result != -1) {
+
+                Toast.makeText(
+                        this,
+                        "Ingredient saved successfully",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+                finish();
+
+            } else {
+
+                Toast.makeText(
+                        this,
+                        "Failed to save ingredient",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
         }
     }
 }

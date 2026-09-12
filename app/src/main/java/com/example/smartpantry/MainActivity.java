@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         pantryItems = databaseHelper.getAllPantryItems();
 
         // Create adapter
-        pantryAdapter = new PantryAdapter(pantryItems);
+        pantryAdapter = new PantryAdapter(this, pantryItems);
 
         // Connect adapter to RecyclerView
         rvPantryItems.setAdapter(pantryAdapter);
