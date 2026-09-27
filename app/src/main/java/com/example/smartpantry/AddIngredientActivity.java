@@ -61,9 +61,7 @@ public class AddIngredientActivity extends AppCompatActivity {
         String[] units = {
                 "Select unit",
                 "pcs",
-                "kg",
                 "g",
-                "litres",
                 "ml"
         };
 

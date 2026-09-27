@@ -28,9 +28,17 @@ public class RecipeMatcher {
                 // Look for the required ingredient in the pantry
                 for (PantryItem pantryItem : pantryItems) {
 
-                    if (pantryItem.getName().equalsIgnoreCase(
-                            requiredIngredient.getName()
-                    )
+                    String pantryName =
+                            normaliseIngredientName(
+                                    pantryItem.getName()
+                            );
+
+                    String requiredName =
+                            normaliseIngredientName(
+                                    requiredIngredient.getName()
+                            );
+
+                    if (pantryName.equals(requiredName)
                             && pantryItem.getUnit().equalsIgnoreCase(
                             requiredIngredient.getUnit()
                     )
@@ -42,10 +50,9 @@ public class RecipeMatcher {
                     }
                 }
 
-                // If even one ingredient is missing,
+                // If one ingredient is missing,
                 // the recipe cannot be made
                 if (!ingredientAvailable) {
-
                     recipeCanBeMade = false;
                     break;
                 }
@@ -53,11 +60,53 @@ public class RecipeMatcher {
 
             // Only add recipes where ALL ingredients are available
             if (recipeCanBeMade) {
-
                 matchingRecipes.add(recipe);
             }
         }
 
         return matchingRecipes;
+    }
+
+    private static String normaliseIngredientName(String name) {
+
+        String normalised = name
+                .trim()
+                .toLowerCase();
+
+        // Convert common plural forms to singular
+        if (normalised.endsWith("ies")
+                && normalised.length() > 3) {
+
+            normalised = normalised.substring(
+                    0,
+                    normalised.length() - 3
+            ) + "y";
+
+        } else if (normalised.endsWith("oes")
+                && normalised.length() > 3) {
+
+            normalised = normalised.substring(
+                    0,
+                    normalised.length() - 2
+            );
+
+        } else if (normalised.endsWith("es")
+                && normalised.length() > 2) {
+
+            normalised = normalised.substring(
+                    0,
+                    normalised.length() - 2
+            );
+
+        } else if (normalised.endsWith("s")
+                && normalised.length() > 1) {
+
+            normalised = normalised.substring(
+                    0,
+                    normalised.length() - 1
+            );
+        }
+
+        return normalised;
     }
 }
