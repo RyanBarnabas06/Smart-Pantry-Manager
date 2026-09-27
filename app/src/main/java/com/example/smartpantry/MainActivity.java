@@ -118,6 +118,21 @@ public class MainActivity extends AppCompatActivity {
 
             startActivity(intent);
         });
+
+        // Settings navigation button
+        TextView navSettings = findViewById(
+                R.id.navSettings
+        );
+
+        navSettings.setOnClickListener(v -> {
+
+            Intent intent = new Intent(
+                    MainActivity.this,
+                    SettingsActivity.class
+            );
+
+            startActivity(intent);
+        });
     }
 
     @Override

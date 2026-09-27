@@ -1,7 +1,9 @@
 package com.example.smartpantry;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -24,6 +26,10 @@ public class RecipesActivity extends AppCompatActivity {
     private RecyclerView rvRecipes;
 
     private DatabaseHelper databaseHelper;
+
+    private RecipeAdapter recipeAdapter;
+
+    private ArrayList<Recipe> matchingRecipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +60,8 @@ public class RecipesActivity extends AppCompatActivity {
                     );
 
                     ViewGroup.MarginLayoutParams params =
-                            (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+                            (ViewGroup.MarginLayoutParams)
+                                    view.getLayoutParams();
 
                     params.bottomMargin = systemBars.bottom;
 
@@ -64,42 +71,56 @@ public class RecipesActivity extends AppCompatActivity {
                 }
         );
 
-        // Connect RecyclerView
-        rvRecipes = findViewById(
-                R.id.rvRecipes
-        );
+        // Connect Recipes RecyclerView
+        rvRecipes = findViewById(R.id.rvRecipes);
 
         rvRecipes.setLayoutManager(
                 new LinearLayoutManager(this)
         );
 
+        // Connect no-recipes message
+        TextView tvNoRecipes = findViewById(
+                R.id.tvNoRecipes
+        );
+
         // Create database helper
         databaseHelper = new DatabaseHelper(this);
 
-        // Get pantry items from SQLite
+        // Get pantry items from database
         ArrayList<PantryItem> pantryItems =
                 databaseHelper.getAllPantryItems();
 
-        // Get all predefined recipes
-        ArrayList<Recipe> allRecipes =
-                RecipeData.getRecipes();
+        // Get all available recipes
+        ArrayList<Recipe> recipes =
+                databaseHelper.getAllRecipes();
 
-        // Find recipes that can actually be made
-        ArrayList<Recipe> matchingRecipes =
+        // Find recipes that can be made using pantry items
+        matchingRecipes =
                 RecipeMatcher.getMatchingRecipes(
                         pantryItems,
-                        allRecipes
+                        recipes
                 );
 
-        // Create recipe adapter
-        RecipeAdapter recipeAdapter =
-                new RecipeAdapter(
-                        this,
-                        matchingRecipes
-                );
+        // Create adapter using matching recipes
+        recipeAdapter = new RecipeAdapter(
+                this,
+                matchingRecipes
+        );
 
         // Connect adapter to RecyclerView
         rvRecipes.setAdapter(recipeAdapter);
+
+        // Show feedback when no recipes match
+        if (matchingRecipes.isEmpty()) {
+
+            tvNoRecipes.setVisibility(View.VISIBLE);
+            rvRecipes.setVisibility(View.GONE);
+
+        } else {
+
+            tvNoRecipes.setVisibility(View.GONE);
+            rvRecipes.setVisibility(View.VISIBLE);
+        }
 
         // Pantry navigation
         TextView navPantry = findViewById(
@@ -107,6 +128,29 @@ public class RecipesActivity extends AppCompatActivity {
         );
 
         navPantry.setOnClickListener(v -> {
+
+            Intent intent = new Intent(
+                    RecipesActivity.this,
+                    MainActivity.class
+            );
+
+            startActivity(intent);
+            finish();
+        });
+
+        // Settings navigation
+        TextView navSettings = findViewById(
+                R.id.navSettings
+        );
+
+        navSettings.setOnClickListener(v -> {
+
+            Intent intent = new Intent(
+                    RecipesActivity.this,
+                    SettingsActivity.class
+            );
+
+            startActivity(intent);
             finish();
         });
     }

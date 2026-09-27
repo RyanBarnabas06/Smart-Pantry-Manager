@@ -6,15 +6,18 @@ public class Recipe {
 
     private String name;
     private String description;
+    private String method;
     private ArrayList<PantryItem> requiredIngredients;
 
     public Recipe(
             String name,
             String description,
+            String method,
             ArrayList<PantryItem> requiredIngredients
     ) {
         this.name = name;
         this.description = description;
+        this.method = method;
         this.requiredIngredients = requiredIngredients;
     }
 
@@ -24,6 +27,10 @@ public class Recipe {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getMethod() {
+        return method;
     }
 
     public ArrayList<PantryItem> getRequiredIngredients() {

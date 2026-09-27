@@ -21,10 +21,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         EdgeToEdge.enable(this);
-
         setContentView(R.layout.activity_recipe_detail);
 
-        // Keep status bar icons white
         getWindow().setStatusBarColor(Color.rgb(35, 35, 35));
 
         WindowCompat.getInsetsController(
@@ -32,7 +30,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
                 getWindow().getDecorView()
         ).setAppearanceLightStatusBars(false);
 
-        // Connect views
         TextView tvRecipeName = findViewById(
                 R.id.tvRecipeDetailName
         );
@@ -45,30 +42,34 @@ public class RecipeDetailActivity extends AppCompatActivity {
                 R.id.tvRecipeDetailIngredients
         );
 
+        TextView tvRecipeMethod = findViewById(
+                R.id.tvRecipeDetailMethod
+        );
+
         Button btnBack = findViewById(
                 R.id.btnBackToRecipes
         );
 
-        // Get recipe name passed through the Intent
         String recipeName = getIntent().getStringExtra(
                 "recipe_name"
         );
 
-        // Find the matching recipe
-        Recipe selectedRecipe = null;
+        DatabaseHelper databaseHelper =
+                new DatabaseHelper(this);
 
-        ArrayList<Recipe> recipes = RecipeData.getRecipes();
+        ArrayList<Recipe> recipes =
+                databaseHelper.getAllRecipes();
+
+        Recipe selectedRecipe = null;
 
         for (Recipe recipe : recipes) {
 
             if (recipe.getName().equals(recipeName)) {
-
                 selectedRecipe = recipe;
                 break;
             }
         }
 
-        // Display recipe information
         if (selectedRecipe != null) {
 
             tvRecipeName.setText(
@@ -79,7 +80,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
                     selectedRecipe.getDescription()
             );
 
-            // Build ingredient list
             StringBuilder ingredientsText =
                     new StringBuilder();
 
@@ -98,9 +98,12 @@ public class RecipeDetailActivity extends AppCompatActivity {
             tvRecipeIngredients.setText(
                     ingredientsText.toString().trim()
             );
+
+            tvRecipeMethod.setText(
+                    selectedRecipe.getMethod()
+            );
         }
 
-        // Back button
         btnBack.setOnClickListener(v -> finish());
     }
 }
