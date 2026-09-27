@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -70,6 +71,21 @@ public class RecipesActivity extends AppCompatActivity {
                     return windowInsets;
                 }
         );
+
+        // View All Recipes button
+        Button btnViewAllRecipes = findViewById(
+                R.id.btnViewAllRecipes
+        );
+
+        btnViewAllRecipes.setOnClickListener(v -> {
+
+            Intent intent = new Intent(
+                    RecipesActivity.this,
+                    RecipeGuideActivity.class
+            );
+
+            startActivity(intent);
+        });
 
         // Connect Recipes RecyclerView
         rvRecipes = findViewById(R.id.rvRecipes);
