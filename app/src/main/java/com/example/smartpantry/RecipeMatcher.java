@@ -39,26 +39,22 @@ public class RecipeMatcher {
                             );
 
                     if (pantryName.equals(requiredName)
-                            && pantryItem.getUnit().equalsIgnoreCase(
-                            requiredIngredient.getUnit()
-                    )
-                            && pantryItem.getQuantity()
-                            >= requiredIngredient.getQuantity()) {
+                            && unitsMatch(
+                            pantryItem,
+                            requiredIngredient
+                    )) {
 
                         ingredientAvailable = true;
                         break;
                     }
                 }
 
-                // If one ingredient is missing,
-                // the recipe cannot be made
                 if (!ingredientAvailable) {
                     recipeCanBeMade = false;
                     break;
                 }
             }
 
-            // Only add recipes where ALL ingredients are available
             if (recipeCanBeMade) {
                 matchingRecipes.add(recipe);
             }
@@ -67,13 +63,133 @@ public class RecipeMatcher {
         return matchingRecipes;
     }
 
+    private static boolean unitsMatch(
+            PantryItem pantryItem,
+            PantryItem requiredIngredient
+    ) {
+
+        String pantryUnit =
+                normaliseUnit(pantryItem.getUnit());
+
+        String requiredUnit =
+                normaliseUnit(requiredIngredient.getUnit());
+
+        // Same unit
+        if (pantryUnit.equals(requiredUnit)) {
+
+            return pantryItem.getQuantity()
+                    >= requiredIngredient.getQuantity();
+        }
+
+        // Convert compatible units to grams
+        if (isGramUnit(pantryUnit)
+                && isGramUnit(requiredUnit)) {
+
+            double pantryGrams =
+                    convertToGrams(
+                            pantryItem.getQuantity(),
+                            pantryUnit
+                    );
+
+            double requiredGrams =
+                    convertToGrams(
+                            requiredIngredient.getQuantity(),
+                            requiredUnit
+                    );
+
+            return pantryGrams >= requiredGrams;
+        }
+
+        // Convert compatible units to millilitres
+        if (isMillilitreUnit(pantryUnit)
+                && isMillilitreUnit(requiredUnit)) {
+
+            double pantryMillilitres =
+                    convertToMillilitres(
+                            pantryItem.getQuantity(),
+                            pantryUnit
+                    );
+
+            double requiredMillilitres =
+                    convertToMillilitres(
+                            requiredIngredient.getQuantity(),
+                            requiredUnit
+                    );
+
+            return pantryMillilitres >= requiredMillilitres;
+        }
+
+        // Different incompatible units cannot match
+        return false;
+    }
+
+    private static String normaliseUnit(String unit) {
+
+        return unit
+                .trim()
+                .toLowerCase();
+    }
+
+    private static boolean isGramUnit(String unit) {
+
+        return unit.equals("g")
+                || unit.equals("gram")
+                || unit.equals("grams")
+                || unit.equals("kg")
+                || unit.equals("kilogram")
+                || unit.equals("kilograms");
+    }
+
+    private static boolean isMillilitreUnit(String unit) {
+
+        return unit.equals("ml")
+                || unit.equals("millilitre")
+                || unit.equals("millilitres")
+                || unit.equals("milliliter")
+                || unit.equals("milliliters")
+                || unit.equals("litre")
+                || unit.equals("litres")
+                || unit.equals("liter")
+                || unit.equals("liters");
+    }
+
+    private static double convertToGrams(
+            double quantity,
+            String unit
+    ) {
+
+        if (unit.equals("kg")
+                || unit.equals("kilogram")
+                || unit.equals("kilograms")) {
+
+            return quantity * 1000;
+        }
+
+        return quantity;
+    }
+
+    private static double convertToMillilitres(
+            double quantity,
+            String unit
+    ) {
+
+        if (unit.equals("litre")
+                || unit.equals("litres")
+                || unit.equals("liter")
+                || unit.equals("liters")) {
+
+            return quantity * 1000;
+        }
+
+        return quantity;
+    }
+
     private static String normaliseIngredientName(String name) {
 
         String normalised = name
                 .trim()
                 .toLowerCase();
 
-        // Convert common plural forms to singular
         if (normalised.endsWith("ies")
                 && normalised.length() > 3) {
 

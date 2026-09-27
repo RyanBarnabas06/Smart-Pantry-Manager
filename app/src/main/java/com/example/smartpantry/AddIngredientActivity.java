@@ -62,7 +62,9 @@ public class AddIngredientActivity extends AppCompatActivity {
                 "Select unit",
                 "pcs",
                 "g",
-                "ml"
+                "kg",
+                "ml",
+                "litre"
         };
 
         ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(
