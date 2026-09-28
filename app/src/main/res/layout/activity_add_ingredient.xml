@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,7 +7,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F9F9FB"
+    android:background="#F7F8FA"
     tools:context=".AddIngredientActivity">
 
     <!-- Dark background for the status bar area -->
@@ -19,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Content area with 24dp side margins -->
+    <!-- Content area -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -37,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="38dp"
             android:text="Add Ingredient"
-            android:textColor="#202124"
+            android:textColor="#1F2937"
             android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
@@ -51,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="Ingredient Name"
-            android:textColor="#202124"
+            android:textColor="#1F2937"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/tvAddTitle"
@@ -62,8 +63,9 @@
             android:id="@+id/etIngredientName"
             android:layout_width="0dp"
             android:layout_height="48dp"
+            android:backgroundTint="#4DB6AC"
             android:hint="e.g. Tomatoes"
-            android:textColor="#202124"
+            android:textColor="#1F2937"
             android:textColorHint="#8A8A8A"
             android:inputType="textCapSentences"
             app:layout_constraintTop_toBottomOf="@id/tvNameLabel"
@@ -77,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="Quantity"
-            android:textColor="#202124"
+            android:textColor="#1F2937"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/etIngredientName"
@@ -88,8 +90,9 @@
             android:id="@+id/etQuantity"
             android:layout_width="0dp"
             android:layout_height="48dp"
+            android:backgroundTint="#4DB6AC"
             android:hint="e.g. 5"
-            android:textColor="#202124"
+            android:textColor="#1F2937"
             android:textColorHint="#8A8A8A"
             android:inputType="numberDecimal"
             app:layout_constraintTop_toBottomOf="@id/tvQuantityLabel"
@@ -103,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="Unit"
-            android:textColor="#202124"
+            android:textColor="#1F2937"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/etQuantity"
@@ -115,6 +118,7 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginTop="4dp"
+            android:backgroundTint="#4DB6AC"
             app:layout_constraintTop_toBottomOf="@id/tvUnitLabel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -126,7 +130,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="Expiry Date"
-            android:textColor="#202124"
+            android:textColor="#1F2937"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/spUnit"
@@ -137,8 +141,9 @@
             android:id="@+id/etExpiryDate"
             android:layout_width="0dp"
             android:layout_height="48dp"
+            android:backgroundTint="#4DB6AC"
             android:hint="Select expiry date"
-            android:textColor="#202124"
+            android:textColor="#1F2937"
             android:textColorHint="#8A8A8A"
             android:focusable="false"
             android:clickable="true"
@@ -153,10 +158,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:backgroundTint="#4DB6AC"
             android:text="Save Ingredient"
             android:textColor="#FFFFFF"
             android:textAllCaps="false"
-            android:backgroundTint="#6B4DB3"
             app:layout_constraintTop_toBottomOf="@id/etExpiryDate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -167,10 +172,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:backgroundTint="#9EAAA8"
             android:text="Cancel"
             android:textColor="#FFFFFF"
             android:textAllCaps="false"
-            android:backgroundTint="#6B4DB3"
             app:layout_constraintTop_toBottomOf="@id/btnSaveIngredient"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="• Chicken - 200 g"
-        android:textColor="#4B5563"
+        android:textColor="#6B7280"
         android:textSize="15sp"
         android:lineSpacingExtra="5dp" />
 
@@ -33,7 +33,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:backgroundTint="#4DB6AC"
         android:text="View Recipe"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>

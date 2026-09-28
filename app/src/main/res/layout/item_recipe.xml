@@ -9,7 +9,6 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Recipe name -->
     <TextView
         android:id="@+id/tvRecipeName"
         android:layout_width="match_parent"
@@ -19,7 +18,6 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <!-- Recipe description -->
     <TextView
         android:id="@+id/tvRecipeDescription"
         android:layout_width="match_parent"
@@ -29,13 +27,14 @@
         android:textColor="#6B7280"
         android:textSize="14sp" />
 
-    <!-- View recipe button -->
     <Button
         android:id="@+id/btnViewRecipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:backgroundTint="#4DB6AC"
         android:text="View Recipe"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>
